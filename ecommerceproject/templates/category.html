@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description | truncatewords:100 }}
+    {% else %}
+        Welcome to infinity cart
+    {% endif %}
+{% endblock %}
+
+
+{% block title %}
+    {% if category %}
+        {{ category.name }} - InfinityCart
+    {% else %}
+        New collections - InfinityCart
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+    <div>
+        <div class="row mrc">
+            <div class="mx-auto">
+                <p><a href="{% url 'ecommerceapp:apc' %}">Our Collection</a></p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<div class="mx-auto">
+    {% if category %}
+    <div>
+        <img src="{{category.image.url}}" alt="{{category.name}}" width="1500px" height="500px">
+    </div><br>
+    <br>
+    <div>
+        <h3 class="text-center my_title">{{category.name}}</h3><br>
+        <h6 class="text-justify my_desc">{{category.description}}</h6><br><br>
+    </div>
+    {% else %}
+    <div>
+        <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="Our Products" width="1390px" height="400px">
+    </div><br>
+    <div>
+        <h3 class="text-center my_title">Our Product Collection</h3>
+        <p class="text-justify">ecommerce is revolutionizing the way we all shop in India. Why do you want to hop from one store to another in search of the latest phone when you can find it on the Internet in a single click? Not only mobiles. Flipkart houses everything you can possibly imagine, from trending electronics like laptops, tablets, smartphones, and mobile accessories to in-vogue fashion staples like shoes, clothing and lifestyle accessories</p>
+    </div>
+    {% endif %}
+</div>
+<div class="container">
+    <div class="row mx-auto">
+        {% for products in products.object_list %}
+
+        <div class="my_bottom_margin col-9 col-sm-4 col-md-4 xol-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <div class="card">
+                <a href="{{products.get_url}}"><img src="{{products.image.url}}" alt="{{products.name}}" width="250px" height="200px"></a>
+            </div>
+            <div>
+                <h3>{{products.name}}</h3>
+                <h6>{{products.price}}</h6>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %}active{% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

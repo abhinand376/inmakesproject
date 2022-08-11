@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+{{ product.description | truncatewords:100 }}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ product.name }} - InfinityCart
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div class="row my_prc">
+    <div class="mx_auto">
+        <p><a href="{% url 'ecommerceapp:apc' %}">Home</a>|<a href="{{product.get_url}}">{{product.category}}</a>|{{product.name}} </p>
+    </div>
+</div>
+<div class="container">
+    <br>
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+        <div style="min-width:18rem;">
+            <img style="padding:10px;" src="{{product.image.url}}" alt="{{product.name}}" width="400px" height="400px">
+        </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+        <div>
+        <h1 class="my_title">{{product.name}}</h1>
+        <p>{{product.price}}</p>
+        <p class="text-justify my_title">Product Description</p>
+        <p class="text-justify my_desc">{{product.description}}</p>
+
+        {% if product.stock <= 0 %}
+        <p>Out of stock</p>
+        {% else %}
+        <a class="btn btn-secondary" href="{% url 'cart:add_cart' product.id %}">Add to cart</a>
+        {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
